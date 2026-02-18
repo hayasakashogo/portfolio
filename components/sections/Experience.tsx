@@ -18,7 +18,13 @@ export default function Experience() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.4, delay: i * 0.08 }}
-            className="grid gap-4 sm:grid-cols-[120px_1fr]"
+            className="grid gap-4 rounded-md p-5 sm:grid-cols-[120px_1fr]"
+          style={{
+            background: "var(--glass-bg)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(12px)",
+            border: "1px solid var(--badge-border)",
+          }}
           >
             {/* Period */}
             <div className="pt-0.5">

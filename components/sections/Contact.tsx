@@ -14,7 +14,13 @@ export default function Contact() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.4 }}
-        className="flex flex-col gap-6"
+        className="flex flex-col gap-6 rounded-md p-6"
+        style={{
+          background: "var(--glass-bg)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1px solid var(--badge-border)",
+        }}
       >
         <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
           プロジェクトのご相談・お仕事のご依頼など、お気軽にご連絡ください。
