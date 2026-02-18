@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#0d4f3c"/>
+  <rect x="40" y="40" width="720" height="370" rx="8" fill="rgba(255,255,255,0.05)"/>
+  <text x="400" y="200" font-family="monospace" font-size="48" fill="rgba(0,229,160,0.8)" text-anchor="middle">portfolio</text>
+  <rect x="100" y="240" width="600" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+  <rect x="150" y="270" width="500" height="8" rx="4" fill="rgba(255,255,255,0.07)"/>
+  <rect x="200" y="300" width="400" height="8" rx="4" fill="rgba(255,255,255,0.05)"/>
+</svg>
