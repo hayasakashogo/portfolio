@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { writings } from "@/lib/data";
 import SectionLabel from "@/components/ui/SectionLabel";
 
@@ -14,7 +15,7 @@ export default function Writing() {
     <section id="writing" className="mb-24">
       <SectionLabel>Writing</SectionLabel>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-3">
         {preview.map((article, i) => (
           <motion.a
             key={article.id}
@@ -25,8 +26,12 @@ export default function Writing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.35, delay: i * 0.07 }}
-            className="group grid gap-1 py-5 transition-colors"
-            style={{ borderBottom: "1px solid var(--border)" }}
+            className="card-link group grid gap-1 rounded-md p-4 hover:bg-accent/6 duration-200"
+            style={{
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid var(--badge-border)",
+            }}
           >
             {/* Date + platform */}
             <div className="flex items-center gap-3">
@@ -43,12 +48,19 @@ export default function Writing() {
               >
                 {article.platform}
               </span>
+              <ExternalLink
+                className="-mt-1 ml-auto shrink-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                size={13}
+                style={{ color: "var(--accent)" }}
+              />
             </div>
 
-            {/* Title */}
-            <h3 className="text-sm font-semibold leading-snug transition-colors group-hover:opacity-80" style={{ color: "var(--text)" }}>
-              {article.title}
-            </h3>
+            {/* Title + external link icon */}
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="text-sm font-semibold leading-snug" style={{ color: "var(--text)" }}>
+                {article.title}
+              </h3>
+            </div>
 
             {/* Description */}
             <p className="line-clamp-2 text-xs leading-relaxed" style={{ color: "var(--muted)" }}>

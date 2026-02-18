@@ -18,10 +18,12 @@ export default function Certifications() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.4, delay: i * 0.08 }}
-            className="rounded-xl p-5 transition-colors"
+            className="rounded-md p-5 transition-colors"
             style={{
-              background: "var(--bg-sub)",
-              border: "1px solid var(--border)",
+              background: "var(--glass-bg)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid var(--badge-border)",
             }}
           >
             <div className="mb-3 flex items-start justify-between gap-4">

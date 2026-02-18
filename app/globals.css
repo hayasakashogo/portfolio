@@ -22,6 +22,8 @@
   --badge-bg: rgba(0, 229, 160, 0.08);
   --badge-border: rgba(0, 229, 160, 0.25);
   --border: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(8, 13, 26, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.10);
 }
 
 .light {
@@ -33,6 +35,8 @@
   --badge-bg: rgba(0, 179, 122, 0.08);
   --badge-border: rgba(0, 179, 122, 0.30);
   --border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(248, 250, 252, 0.65);
+  --glass-border: rgba(0, 0, 0, 0.10);
 }
 
 html {
@@ -45,6 +49,32 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Card hover: background transitions to --badge-bg */
+.card-link {
+  background: var(--glass-bg);
+  transition: background 0.2s ease;
+}
+.card-link:hover {
+  background: var(--badge-bg);
+}
+
+/* Opening animation */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.page-content {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s;
+}
+
+body.opening-done .page-content {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Scrollbar styling */

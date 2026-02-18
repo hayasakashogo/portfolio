@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { projects } from "@/lib/data";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Badge from "@/components/ui/Badge";
@@ -29,10 +30,11 @@ export default function Projects() {
               href={project.url ?? "#"}
               target={project.url ? "_blank" : undefined}
               rel="noopener noreferrer"
-              className="group flex gap-4 rounded-xl p-4 transition-colors"
+              className="card-link group flex gap-4 rounded-md p-4 hover:bg-accent/6 duration-200"
               style={{
-                background: "var(--bg-sub)",
-                border: "1px solid var(--border)",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: "1px solid var(--badge-border)",
               }}
             >
               {/* Thumbnail */}
@@ -54,13 +56,11 @@ export default function Projects() {
                   <h3 className="truncate text-sm font-semibold" style={{ color: "var(--text)" }}>
                     {project.name}
                   </h3>
-                  {/* Stars */}
-                  <span className="flex flex-shrink-0 items-center gap-1 text-xs tabular-nums" style={{ color: "var(--muted)" }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                    {project.stars}
-                  </span>
+                  <ExternalLink
+                    className="-mt-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                    size={12}
+                    style={{ color: "var(--accent)" }}
+                  />
                 </div>
                 <p className="text-xs leading-relaxed" style={{ color: "var(--muted)" }}>
                   {project.description}
