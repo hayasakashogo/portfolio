@@ -55,17 +55,22 @@ components/
     Experience.tsx    — タイムライン形式（期間・役職・バッジ）
     Certifications.tsx — カード形式（年・資格名・説明・タグ）
     Projects.tsx      — 上位4件：SP=1カラムカードグリッド / lg=横並びリスト + "View more →"
-    Writing.tsx       — 上位5件：記事リスト + "View more →" (/writing へ)
+    Writing.tsx       — 上位4件：記事リスト + "View more →" (/writing へ)
     Contact.tsx       — メール CTA + フッター
   ui/
     Badge.tsx         — ティール枠のスキルバッジ
     SectionLabel.tsx  — セクション見出し（EXPERIENCE 等）
   writing/
-    WritingGrid.tsx   — /writing 専用グリッド（sm:2カラム・日付・プラットフォームタグ・閲覧数）
+    WritingGrid.tsx   — /writing 専用グリッド（sm:2カラム・日付・プラットフォームタグ）
 
 lib/
-  types.ts            — 全コンテンツの TypeScript 型定義（microCMS 移行対応設計）
-  data.ts             — 静的ダミーデータ（types.ts の型を import）
+  types.ts            — 全コンテンツの TypeScript 型定義
+                        Project: id/name/description/skills[]/thumbnail?/url?（stars 削除済み）
+                        Writing: id/date/platform/title/description/url?（views 削除済み）
+  microcms.ts         — microCMS SDK クライアントファクトリー（getClient() を遅延生成）
+  data.ts             — 静的データ + microCMS フェッチ関数
+                        静的: profile・experiences・certifications
+                        async: getProjects()・getWritings()
 
 public/
   projects/           — SVG プレースホルダーサムネイル（portfolio, ui-kit, saas-dashboard, markdown-editor）
@@ -114,8 +119,7 @@ public/
 - 再訪問時: `sessionStorage` のフラグを検知してアニメーションをスキップ
 
 ### アイコン（lucide-react）
-- `ProjectGrid.tsx`: `ExternalLink` アイコン（外部リンク表示）
-- `WritingGrid.tsx`: 閲覧数表示に SVG 目アイコン（インラインで使用）
+- `ProjectGrid.tsx` / `Projects.tsx` / `Writing.tsx` / `WritingGrid.tsx`: `ExternalLink` アイコン（外部リンク表示）
 
 ### パスエイリアス
 `@/*` はプロジェクトルート（`./`）に解決される。例: `import Foo from "@/components/Foo"`
@@ -126,11 +130,19 @@ public/
 ### フォント
 Geist Sans と Geist Mono を `app/layout.tsx` で `next/font/google` から読み込み、CSS 変数 `--font-geist-sans` / `--font-geist-mono` として公開。
 
-### データ層（microCMS 移行パス）
-- `lib/types.ts` — コンテンツ型のみ（`Profile`・`Experience`・`Certification`・`Project`・`Writing`）
-- `lib/data.ts` — その型を import して静的配列をエクスポート（projects: 6件、writings: 6件）
-  - トップページの各セクションは先頭4件（Projects）・5件（Writing）のみ表示
-- microCMS 移行時: `lib/data.ts` のエクスポートを SDK フェッチに置き換えるだけでよい設計
+### データ層（microCMS 統合済み）
+- `lib/microcms.ts` — `getClient()` 関数でモジュール初期化時ではなくリクエスト時にクライアントを生成（環境変数未設定でも build が通る）
+- `lib/data.ts`:
+  - **静的**: `profile`・`experiences`・`certifications`（配列をそのままエクスポート）
+  - **動的**: `getProjects()` / `getWritings()` — microCMS SDK でフェッチし `Project[]` / `Writing[]` を返す
+- **microCMS レスポンス正規化**（`getProjects()` 内）:
+  - `skills`: `{fieldId, name}[]` → `string[]`（`.name` を抽出）
+  - `thumbnail`: テキスト型（string）・画像型（`{url,width,height}`）の両方に対応
+  - `thumbnail` / `url`: 空文字 → `undefined` に正規化
+- **全ページ `export const dynamic = "force-dynamic"`**: microCMS フェッチを伴うページは静的生成をオプトアウト
+- **環境変数**: `.env.local` に `MICROCMS_SERVICE_DOMAIN` と `MICROCMS_API_KEY` を設定
 
-### next/image と SVG
-`public/projects/` の SVG サムネイルは `<Image unoptimized />` で描画し、Next.js の画像最適化をバイパスしている。
+### next/image
+- 全サムネイルは `<Image unoptimized />` で描画し、Next.js の画像最適化・ドメイン検証をバイパス
+- サムネイルは `object-top`（上部中央基準）でトリミング表示
+- `public/projects/` に SVG プレースホルダーサムネイルあり（portfolio, ui-kit, saas-dashboard, markdown-editor）

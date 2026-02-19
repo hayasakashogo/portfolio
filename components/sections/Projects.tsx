@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
-import { projects } from "@/lib/data";
+import type { Project } from "@/lib/types";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Badge from "@/components/ui/Badge";
 
 const PREVIEW_COUNT = 4;
 
-export default function Projects() {
+export default function Projects({ projects }: { projects: Project[] }) {
   const preview = projects.slice(0, PREVIEW_COUNT);
 
   return (
@@ -43,7 +43,7 @@ export default function Projects() {
                   src={project.thumbnail}
                   alt={project.name}
                   fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
                   unoptimized
                 />
               </div>

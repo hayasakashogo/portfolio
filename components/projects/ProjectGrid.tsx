@@ -33,7 +33,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
                 src={project.thumbnail}
                 alt={project.name}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
                 unoptimized
               />
             </div>
