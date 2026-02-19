@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const NAV_SECTIONS = [
   { id: "experience", label: "EXPERIENCE" },
+  { id: "skills", label: "SKILLS" },
   { id: "certifications", label: "CERTIFICATIONS" },
   { id: "projects", label: "PROJECTS" },
   { id: "writing", label: "WRITING" },

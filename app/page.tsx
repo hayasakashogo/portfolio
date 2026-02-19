@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import PageLayout from "@/components/layout/PageLayout";
 import Experience from "@/components/sections/Experience";
+import Skills from "@/components/sections/Skills";
 import Certifications from "@/components/sections/Certifications";
 import Projects from "@/components/sections/Projects";
 import Writing from "@/components/sections/Writing";
@@ -13,6 +14,7 @@ export default async function Home() {
   return (
     <PageLayout>
       <Experience />
+      <Skills />
       <Certifications />
       <Projects projects={projects} />
       <Writing writings={writings} />
