@@ -31,7 +31,6 @@ export type Project = {
   id: string;
   name: string;
   description: string;
-  stars: number;
   skills: string[];
   thumbnail?: string;
   url?: string;
@@ -43,6 +42,5 @@ export type Writing = {
   platform: string;
   title: string;
   description: string;
-  views: number;
   url?: string;
 };

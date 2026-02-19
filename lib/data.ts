@@ -1,4 +1,5 @@
 import type { Profile, Experience, Certification, Project, Writing } from "./types";
+import { getClient } from "./microcms";
 
 export const profile: Profile = {
   role: "Frontend Engineer",
@@ -64,126 +65,30 @@ export const certifications: Certification[] = [
   },
 ];
 
-export const projects: Project[] = [
-  {
-    id: "portfolio",
-    name: "Portfolio v3",
-    description:
-      "Next.js App Router + Tailwind CSS v4 で構築した本ポートフォリオサイト。ダークモード・アニメーション・SEO 最適化を含む。",
-    stars: 42,
-    skills: ["Next.js", "TypeScript", "Tailwind CSS", "framer-motion"],
-    thumbnail: "/projects/portfolio.svg",
-    url: "https://github.com/taro-yamada/portfolio",
-  },
-  {
-    id: "ui-kit",
-    name: "React UI Kit",
-    description:
-      "Storybook ドキュメント付きのコンポーネントライブラリ。アクセシビリティ（WAI-ARIA）に準拠し、CI でビジュアルリグレッションテストを実施。",
-    stars: 128,
-    skills: ["React", "TypeScript", "Storybook", "Chromatic"],
-    thumbnail: "/projects/ui-kit.svg",
-    url: "https://github.com/taro-yamada/react-ui-kit",
-  },
-  {
-    id: "saas-dashboard",
-    name: "SaaS Dashboard Starter",
-    description:
-      "Next.js + Prisma + Tailwind CSS で構築したマルチテナント SaaS のスターターキット。認証・権限管理・課金連携を含む。",
-    stars: 256,
-    skills: ["Next.js", "Prisma", "NextAuth.js", "Stripe"],
-    thumbnail: "/projects/saas-dashboard.svg",
-    url: "https://github.com/taro-yamada/saas-dashboard",
-  },
-  {
-    id: "markdown-editor",
-    name: "Markdown Live Editor",
-    description:
-      "リアルタイムプレビュー付きの Markdown エディタ。Codemirror 6 + remark で実装し、localStorage に自動保存する。",
-    stars: 87,
-    skills: ["React", "Codemirror", "remark", "TypeScript"],
-    thumbnail: "/projects/markdown-editor.svg",
-    url: "https://github.com/taro-yamada/markdown-editor",
-  },
-  {
-    id: "cli-tool",
-    name: "create-app CLI",
-    description:
-      "プロジェクトの雛形を対話的に生成する CLI ツール。Next.js / Vite / Remix のテンプレートを選択可能。",
-    stars: 63,
-    skills: ["Node.js", "TypeScript", "Inquirer.js"],
-    url: "https://github.com/taro-yamada/create-app",
-  },
-  {
-    id: "animation-lib",
-    name: "Scroll Animation Hooks",
-    description:
-      "Intersection Observer をラップした React カスタムフックライブラリ。スクロール連動アニメーションを宣言的に実装できる。",
-    stars: 34,
-    skills: ["React", "TypeScript", "Rollup"],
-    url: "https://github.com/taro-yamada/scroll-animation-hooks",
-  },
-];
+type MicroCMSTextField = { fieldId: string; name: string };
+type MicroCMSImageField = { url: string; width: number; height: number };
 
-export const writings: Writing[] = [
-  {
-    id: "nextjs-app-router-tips",
-    date: "2024-01-15",
-    platform: "Zenn",
-    title: "Next.js App Router 移行で学んだ10のこと",
-    description:
-      "Pages Router から App Router へ実案件を移行した際のつまずきポイントと解決策をまとめた記事。Server Components の思考モデルを中心に解説。",
-    views: 12400,
-    url: "https://zenn.dev/taro_yamada/articles/nextjs-app-router-tips",
-  },
-  {
-    id: "tailwind-v4-guide",
-    date: "2024-03-08",
-    platform: "Zenn",
-    title: "Tailwind CSS v4 移行ガイド：v3との違いと新機能まとめ",
-    description:
-      "CSS-first 設定や @theme ディレクティブなど、v4 の破壊的変更を実例付きで解説。プロジェクトへの段階的導入方法も紹介。",
-    views: 8700,
-    url: "https://zenn.dev/taro_yamada/articles/tailwind-v4-guide",
-  },
-  {
-    id: "core-web-vitals-2024",
-    date: "2024-05-20",
-    platform: "note",
-    title: "Core Web Vitals 改善実録：LCP を 4.2s → 1.1s にした方法",
-    description:
-      "実際のプロジェクトで LCP を 75% 改善した手順を公開。画像最適化・フォント戦略・Server Components 活用の三本柱で達成。",
-    views: 6200,
-    url: "https://note.com/taro_yamada/n/core-web-vitals-2024",
-  },
-  {
-    id: "typescript-patterns",
-    date: "2024-07-10",
-    platform: "Zenn",
-    title: "フロントエンドで使う TypeScript 型パターン集",
-    description:
-      "discriminated union・branded types・satisfies など、フロントエンド開発で実際に役立つ型テクニックをユースケース別に整理。",
-    views: 9800,
-    url: "https://zenn.dev/taro_yamada/articles/typescript-patterns",
-  },
-  {
-    id: "accessibility-checklist",
-    date: "2024-09-05",
-    platform: "Qiita",
-    title: "フロントエンドエンジニアのアクセシビリティ実装チェックリスト",
-    description:
-      "WAI-ARIA・キーボード操作・色コントラストなど、実装時に確認すべき項目を網羅したチェックリスト。スクリーンリーダーテスト手順も含む。",
-    views: 5400,
-    url: "https://qiita.com/taro_yamada/items/accessibility-checklist",
-  },
-  {
-    id: "react-server-components",
-    date: "2024-11-18",
-    platform: "Zenn",
-    title: "React Server Components 完全理解ガイド",
-    description:
-      "RSC の動作原理から実装パターン、よくある落とし穴まで。useState が使えない理由から始まり、データフェッチの最適化まで詳しく解説。",
-    views: 15600,
-    url: "https://zenn.dev/taro_yamada/articles/react-server-components",
-  },
-];
+type MicroCMSProject = Omit<Project, "skills" | "thumbnail"> & {
+  skills: MicroCMSTextField[];
+  thumbnail?: string | MicroCMSImageField;
+};
+
+type MicroCMSWriting = Writing;
+
+export async function getProjects(): Promise<Project[]> {
+  const data = await getClient().getList<MicroCMSProject>({ endpoint: "projects", queries: { limit: 100 } });
+  return data.contents.map((item) => ({
+    ...item,
+    skills: item.skills.map((s) => s.name),
+    thumbnail: typeof item.thumbnail === "object" ? item.thumbnail?.url || undefined : item.thumbnail || undefined,
+    url: item.url || undefined,
+  }));
+}
+
+export async function getWritings(): Promise<Writing[]> {
+  const data = await getClient().getList<MicroCMSWriting>({ endpoint: "writings", queries: { limit: 100 } });
+  return data.contents.map((item) => ({
+    ...item,
+    url: item.url || undefined,
+  }));
+}

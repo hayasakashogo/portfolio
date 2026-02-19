@@ -1,6 +1,8 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import SectionLabel from "@/components/ui/SectionLabel";
-import { writings } from "@/lib/data";
+import { getWritings } from "@/lib/data";
 import WritingGrid from "@/components/writing/WritingGrid";
 
 export const metadata = {
@@ -8,7 +10,8 @@ export const metadata = {
   description: "Taro Yamadaの記事一覧",
 };
 
-export default function WritingPage() {
+export default async function WritingPage() {
+  const writings = await getWritings();
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-8">

@@ -3,12 +3,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
-import { writings } from "@/lib/data";
+import type { Writing as WritingType } from "@/lib/types";
 import SectionLabel from "@/components/ui/SectionLabel";
 
-const PREVIEW_COUNT = 5;
+const PREVIEW_COUNT = 4;
 
-export default function Writing() {
+export default function Writing({ writings }: { writings: WritingType[] }) {
   const preview = writings.slice(0, PREVIEW_COUNT);
 
   return (
@@ -65,15 +65,6 @@ export default function Writing() {
             {/* Description */}
             <p className="line-clamp-2 text-xs leading-relaxed" style={{ color: "var(--muted)" }}>
               {article.description}
-            </p>
-
-            {/* Views */}
-            <p className="mt-1 flex items-center gap-1 text-xs" style={{ color: "var(--muted)" }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-              {article.views.toLocaleString("ja-JP")} views
             </p>
           </motion.a>
         ))}

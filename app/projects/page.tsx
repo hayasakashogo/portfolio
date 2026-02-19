@@ -1,6 +1,8 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import SectionLabel from "@/components/ui/SectionLabel";
-import { projects } from "@/lib/data";
+import { getProjects } from "@/lib/data";
 import ProjectGrid from "@/components/projects/ProjectGrid";
 
 export const metadata = {
@@ -8,7 +10,8 @@ export const metadata = {
   description: "Taro Yamadaのプロジェクト一覧",
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects();
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-8">
