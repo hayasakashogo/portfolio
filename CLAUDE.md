@@ -46,6 +46,7 @@ components/
                         MobileMenu は layout.tsx に移動済み（.page-content の外）
     HeroPanel.tsx     — 左固定：名前・bio・SNSリンク（accent色）・ThemeToggle
     NavPanel.tsx      — 右固定：セクションナビ（Intersection Observer でアクティブ検知）
+                        NAV_SECTIONS: experience / skills / certifications / projects / writing / contact
     MobileMenu.tsx    — SP用ハンバーガーメニュー（layout.tsx で .page-content 外にレンダリング）
                         開閉時 framer-motion アニメーション・開放中 body.overflow:hidden
     ThemeToggle.tsx   — ダーク/ライト切り替えボタン（マウント検知に useSyncExternalStore 使用）
@@ -53,6 +54,8 @@ components/
     ProjectGrid.tsx   — /projects 専用グリッド（sm:2/lg:3カラム・サムネイルホバー・ExternalLink アイコン）
   sections/
     Experience.tsx    — タイムライン形式（期間・役職・バッジ）
+    Skills.tsx        — 3カテゴリ（Languages / Frameworks / Tools）スキルチップ表示
+                        react-icons/si（Simple Icons）+ react-icons/vsc でアイコン付きバッジ
     Certifications.tsx — カード形式（年・資格名・説明・タグ）
     Projects.tsx      — 上位4件：SP=1カラムカードグリッド / lg=横並びリスト + "View more →"
     Writing.tsx       — 上位4件：記事リスト + "View more →" (/writing へ)
@@ -118,8 +121,9 @@ public/
 - `app/globals.css` に `.page-content` のフェードイン用キーフレームを定義
 - 再訪問時: `sessionStorage` のフラグを検知してアニメーションをスキップ
 
-### アイコン（lucide-react）
-- `ProjectGrid.tsx` / `Projects.tsx` / `Writing.tsx` / `WritingGrid.tsx`: `ExternalLink` アイコン（外部リンク表示）
+### アイコン
+- **lucide-react**: `ProjectGrid.tsx` / `Projects.tsx` / `Writing.tsx` / `WritingGrid.tsx` — `ExternalLink`（外部リンク表示）
+- **react-icons**: `Skills.tsx` — `react-icons/si`（Simple Icons）+ `react-icons/vsc` でスキルバッジにブランドロゴを表示
 
 ### パスエイリアス
 `@/*` はプロジェクトルート（`./`）に解決される。例: `import Foo from "@/components/Foo"`
