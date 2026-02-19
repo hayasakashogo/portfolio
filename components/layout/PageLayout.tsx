@@ -1,6 +1,5 @@
 import HeroPanel from "@/components/layout/HeroPanel";
 import NavPanel from "@/components/layout/NavPanel";
-import MobileMenu from "@/components/layout/MobileMenu";
 
 type PageLayoutProps = {
   children: React.ReactNode;
@@ -9,14 +8,11 @@ type PageLayoutProps = {
 export default function PageLayout({ children }: PageLayoutProps) {
   return (
     <>
-      {/* Mobile header/menu */}
-      <MobileMenu />
-
       {/* Main layout */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12">
         <div className="lg:flex lg:min-h-screen lg:gap-12 xl:gap-16">
           {/* Left: Hero panel — fixed on lg+ */}
-          <aside className="pt-20 pb-8 lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[320px] lg:flex-shrink-0 lg:flex-col lg:justify-center lg:pt-16 lg:pb-16">
+          <aside className="flex min-h-screen flex-col justify-center pt-20 pb-8 lg:sticky lg:top-0 lg:flex lg:h-screen lg:min-h-0 lg:w-[320px] lg:flex-shrink-0 lg:pt-16 lg:pb-16 lg:justify-center">
             <HeroPanel />
           </aside>
 

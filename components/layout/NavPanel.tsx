@@ -68,14 +68,14 @@ export default function NavPanel() {
         <Link
           href="/projects"
           className="block py-1.5 text-xs transition-colors"
-          style={{ color: "var(--muted)" }}
+          style={{ color: "var(--accent)" }}
         >
           All Projects →
         </Link>
         <Link
           href="/writing"
           className="block py-1.5 text-xs transition-colors"
-          style={{ color: "var(--muted)" }}
+          style={{ color: "var(--accent)" }}
         >
           All Writing →
         </Link>

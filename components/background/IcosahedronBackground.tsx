@@ -5,31 +5,31 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useTheme } from 'next-themes'
 
-// ── Constants ────────────────────────────────────────────────────────────────
+// ── 定数 ────────────────────────────────────────────────────────────────
 const ICO_RADIUS = 2.2
 const CAMERA_Z   = 6.0
 const FOV        = 50
 
-// Typing animation
+// タイピングアニメーション
 const TYPING_TEXT  = 'Hello, World.'
-const TYPING_SPEED = 100   // ms per char
-const TYPING_START = 800   // ms before first char
-const TYPING_END   = 1000  // ms after last char before 3D opens
+const TYPING_SPEED = 100   // 1文字あたりのms
+const TYPING_START = 1500   // 最初の文字が出るまでの待機ms
+const TYPING_END   = 1500  // 最後の文字の後、3Dが開くまでのms
 
-// 3D animation (values mirror index2.html CONFIG)
-const SPREAD_AMOUNT   = 1.8     // how far vertices bloom out
-const OPEN_LERP       = 0.015   // lerp speed per frame at 60 fps
+// 3Dアニメーション
+const SPREAD_AMOUNT   = 1.8     // 頂点が広がる距離
+const OPEN_LERP       = 0.015   // 60fpsでのlerp速度
 const ROTATE_Y        = 0.09    // rad/s  (0.0015 × 60)
 const ROTATE_X        = 0.054   // rad/s  (0.0015 × 0.6 × 60)
-const MOUSE_SENS      = 0.0003  // rad per screen-pixel
-const MOUSE_SMOOTH    = 0.05    // lerp smoothness for mouse tilt
-const SCROLL_X_SENS   = 0.0005  // objectGroup X-tilt per scroll-px
-const SCROLL_ZOOM     = 0.0015  // camera Z retract per scroll-px
+const MOUSE_SENS      = 0.0003  // スクリーンピクセルあたりのrad
+const MOUSE_SMOOTH    = 0.05    // マウスチルトのlerp滑らかさ
+const SCROLL_X_SENS   = 0.0005  // スクロールpxあたりのX軸チルト
+const SCROLL_ZOOM     = 0.0015  // スクロールpxあたりのカメラZ後退量
 
-// ── Sphere geometry ───────────────────────────────────────────────────────────
-const W_SEG = 12  // longitude segments (meridians)
-const H_SEG = 8   // latitude segments  (parallels + poles)
-// Interior rings: N = H_SEG - 1 = 7  →  total vertices: 2 + 7×12 = 86
+// ── 球体ジオメトリ ───────────────────────────────────────────────────────────
+const W_SEG = 12  // 経度セグメント数（子午線）
+const H_SEG = 8   // 緯度セグメント数（平行線 + 極）
+// 内部リング: N = H_SEG - 1 = 7  →  総頂点数: 2 + 7×12 = 86
 
 function buildSphereData(radius: number) {
   const N       = H_SEG - 1
@@ -47,10 +47,10 @@ function buildSphereData(radius: number) {
     explosionDirections[idx * 3 + 2] = nz * s
   }
 
-  // Top pole
+  // 北極
   setVert(0, 0, 1, 0)
 
-  // Interior latitude rings
+  // 内部緯度リング
   for (let h = 1; h <= N; h++) {
     const theta = (h / H_SEG) * Math.PI
     const sinT  = Math.sin(theta)
@@ -66,15 +66,15 @@ function buildSphereData(radius: number) {
     }
   }
 
-  // Bottom pole
+  // 南極
   setVert(numVerts - 1, 0, -1, 0)
 
   const edgeIndices: number[] = []
 
-  // Top pole → first ring
+  // 北極 → 最初のリング
   for (let w = 0; w < W_SEG; w++) edgeIndices.push(0, 1 + w)
 
-  // Latitude lines within each interior ring
+  // 各内部リング内の緯度線
   for (let h = 0; h < N; h++) {
     const base = 1 + h * W_SEG
     for (let w = 0; w < W_SEG; w++) {
@@ -82,41 +82,44 @@ function buildSphereData(radius: number) {
     }
   }
 
-  // Longitude lines between consecutive rings
+  // 隣接リング間の経度線
   for (let h = 0; h < N - 1; h++) {
     for (let w = 0; w < W_SEG; w++) {
       edgeIndices.push(1 + h * W_SEG + w, 1 + (h + 1) * W_SEG + w)
     }
   }
 
-  // Last ring → bottom pole
+  // 最後のリング → 南極
   const lastBase = 1 + (N - 1) * W_SEG
   for (let w = 0; w < W_SEG; w++) edgeIndices.push(lastBase + w, numVerts - 1)
 
   return { positions, explosionDirections, edgeIndices }
 }
 
-// ── SSR-safe mount detection ─────────────────────────────────────────────────
+// ── SSRセーフなマウント検知 ─────────────────────────────────────────────────
 const subscribe = () => () => {}
 function useIsMounted() {
   return useSyncExternalStore(subscribe, () => true, () => false)
 }
 
-// ── Typing overlay ───────────────────────────────────────────────────────────
+// ── タイピングオーバーレイ ───────────────────────────────────────────────────
 function TypingOverlay({ isOpeningRef }: { isOpeningRef: { current: boolean } }) {
-  // Check sessionStorage at mount time (client-only component, always safe)
+  // マウント時にsessionStorageを確認（クライアント専用コンポーネントなので常に安全）
   const alreadyOpened = useRef(!!sessionStorage.getItem('portfolio-opened'))
 
   const [displayText, setDisplayText] = useState('')
   const [isDone, setIsDone]           = useState(alreadyOpened.current)
 
   useEffect(() => {
-    // Same-session revisit: skip animation immediately
+    // 同一セッションの再訪問: アニメーションをスキップ
     if (alreadyOpened.current) {
       isOpeningRef.current = true
       document.body.classList.add('opening-done')
       return
     }
+
+    // アニメーション中はスクロールを禁止
+    document.body.style.overflow = 'hidden'
 
     let charIndex = 0
     let intervalId: ReturnType<typeof setInterval>
@@ -132,6 +135,7 @@ function TypingOverlay({ isOpeningRef }: { isOpeningRef: { current: boolean } })
             setIsDone(true)
             isOpeningRef.current = true
             document.body.classList.add('opening-done')
+            document.body.style.overflow = ''
             sessionStorage.setItem('portfolio-opened', '1')
           }, TYPING_END)
         }
@@ -178,7 +182,7 @@ function TypingOverlay({ isOpeningRef }: { isOpeningRef: { current: boolean } })
   )
 }
 
-// ── 3D Scene ─────────────────────────────────────────────────────────────────
+// ── 3Dシーン ─────────────────────────────────────────────────────────────────
 interface SceneProps {
   accentColor:  string
   isOpeningRef: { current: boolean }
@@ -187,7 +191,7 @@ interface SceneProps {
 function IcosahedronScene({ accentColor, isOpeningRef }: SceneProps) {
   const { camera } = useThree()
 
-  // All Three.js objects created once
+  // Three.jsオブジェクトを一度だけ生成
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const geo = useMemo(() => {
     const data = buildSphereData(ICO_RADIUS)
@@ -203,7 +207,7 @@ function IcosahedronScene({ accentColor, isOpeningRef }: SceneProps) {
 
     const originalPos = new Float32Array(positions)
 
-    // Circular dot texture (replaces default square sprite)
+    // 円形ドットテクスチャ（デフォルトの正方形スプライトを置き換え）
     const canvas = document.createElement('canvas')
     canvas.width = canvas.height = 64
     const ctx = canvas.getContext('2d')!
@@ -231,7 +235,7 @@ function IcosahedronScene({ accentColor, isOpeningRef }: SceneProps) {
     }
   }, [])
 
-  // Dispose on unmount
+  // アンマウント時にリソースを解放
   useEffect(() => {
     const { lineSegs, pts, lineMat, pointMat, dotTexture } = geo
     return () => {
@@ -243,20 +247,20 @@ function IcosahedronScene({ accentColor, isOpeningRef }: SceneProps) {
     }
   }, [geo])
 
-  // Update material colors on theme change
+  // テーマ変更時にマテリアルカラーを更新
   useEffect(() => {
     geo.lineMat.color.set(accentColor)
     geo.pointMat.color.set(accentColor)
   }, [accentColor, geo])
 
-  // Animation refs
-  const outerGroupRef   = useRef<THREE.Group>(null) // mouse tilt + scroll
-  const innerGroupRef   = useRef<THREE.Group>(null) // auto-rotation
+  // アニメーション用ref
+  const outerGroupRef   = useRef<THREE.Group>(null) // マウスチルト + スクロール
+  const innerGroupRef   = useRef<THREE.Group>(null) // 自動回転
   const bloomFactorRef  = useRef(0)
   const mouseRef        = useRef({ x: 0, y: 0 })
   const scrollYRef      = useRef(0)
 
-  // Global event listeners
+  // グローバルイベントリスナー
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
       mouseRef.current.x = e.clientX - window.innerWidth  / 2
@@ -288,7 +292,7 @@ function IcosahedronScene({ accentColor, isOpeningRef }: SceneProps) {
     const scrollY = scrollYRef.current
     const { positions, posAttr, originalPos, explosionDirections } = geo
 
-    // ── Bloom spread (0 → SPREAD_AMOUNT after typing) ─────────────────────
+    // ── ブルーム展開（タイピング後に 0 → SPREAD_AMOUNT） ─────────────────────
     const targetBloom = isOpeningRef.current ? SPREAD_AMOUNT : 0
     if (Math.abs(bloomFactorRef.current - targetBloom) > 0.001) {
       bloomFactorRef.current += (targetBloom - bloomFactorRef.current) *
@@ -301,17 +305,17 @@ function IcosahedronScene({ accentColor, isOpeningRef }: SceneProps) {
       posAttr.needsUpdate = true
     }
 
-    // ── Inner group: auto-rotation ────────────────────────────────────────
+    // ── インナーグループ: 自動回転 ────────────────────────────────────────
     inner.rotation.x += ROTATE_X * dt
     inner.rotation.y += ROTATE_Y * dt
 
-    // ── Outer group: mouse tilt + scroll X-tilt ───────────────────────────
+    // ── アウターグループ: マウスチルト + スクロールX軸チルト ───────────────────────
     const targetX = mouseRef.current.y * MOUSE_SENS + scrollY * SCROLL_X_SENS
     const targetY = mouseRef.current.x * MOUSE_SENS
     outer.rotation.x += (targetX - outer.rotation.x) * MOUSE_SMOOTH
     outer.rotation.y += (targetY - outer.rotation.y) * MOUSE_SMOOTH
 
-    // ── Camera zoom on scroll ─────────────────────────────────────────────
+    // ── スクロールによるカメラズーム ─────────────────────────────────────
     const targetZ = CAMERA_Z - scrollY * SCROLL_ZOOM
     camera.position.z += (Math.max(targetZ, 2.0) - camera.position.z) * 0.05
   })
@@ -326,7 +330,7 @@ function IcosahedronScene({ accentColor, isOpeningRef }: SceneProps) {
   )
 }
 
-// ── Default export ────────────────────────────────────────────────────────────
+// ── デフォルトエクスポート ────────────────────────────────────────────────────
 export default function IcosahedronBackground() {
   const { resolvedTheme } = useTheme()
   const isMounted         = useIsMounted()
@@ -334,7 +338,7 @@ export default function IcosahedronBackground() {
   if (!isMounted) return null
 
   const accentColor  = resolvedTheme === 'light' ? '#00b37a' : '#00e5a0'
-  // Shared ref: TypingOverlay sets it, IcosahedronScene reads it in useFrame
+  // 共有ref: TypingOverlayがセット、IcosahedronSceneがuseFrame内で参照
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const isOpeningRef = useRef(false)
 

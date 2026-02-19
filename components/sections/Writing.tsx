@@ -28,8 +28,8 @@ export default function Writing() {
             transition={{ duration: 0.35, delay: i * 0.07 }}
             className="card-link group grid gap-1 rounded-md p-4 hover:bg-accent/6 duration-200"
             style={{
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(12px)",
+              backdropFilter: "blur(4px)",
+              WebkitBackdropFilter: "blur(4px)",
               border: "1px solid var(--badge-border)",
             }}
           >
