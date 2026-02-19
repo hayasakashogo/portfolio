@@ -2,9 +2,9 @@ import type { Profile, Experience, Certification, Project, Writing } from "./typ
 import { getClient } from "./microcms";
 
 export const profile: Profile = {
-  role: "Frontend Engineer",
+  role: "Webエンジニア/宅地建物取引士",
   name: "Shogo Hayasaka",
-  bio: "モダンで高品質なWebフロントエンドの開発を専門とするフリーランスエンジニアです。React / Next.js を中心に、パフォーマンスとアクセシビリティを意識したUI実装が得意です。",
+  bio: "フロントエンドエンジニアとして、UI/UXにこだわったWebの設計・実装に日々向き合っています。2025年には宅地建物取引士を取得。技術の枠にとどまらず、異分野にも手を伸ばしながら、自分だけの視座を持つエンジニアでありたいと考えています。",
   skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "GraphQL", "Node.js"],
   social: {
     github: "https://github.com/taro-yamada",
@@ -16,52 +16,53 @@ export const profile: Profile = {
 
 export const experiences: Experience[] = [
   {
-    period: "2022 — 現在",
-    company: "フリーランス",
-    role: "フロントエンドエンジニア",
-    description:
-      "複数のスタートアップや中規模企業のフロントエンド開発を担当。Next.js App Router への移行、デザインシステム構築、パフォーマンス改善（Core Web Vitals）などを手がける。",
-    skills: ["Next.js", "TypeScript", "Tailwind CSS", "Storybook"],
+    period: "2022 — 2025",
+    title: "新卒でデジタルマーケティング企業（東証プライム上場）に入社",
+    description: "Reactを用いた顧客管理ツールの開発、WordPressサイトの構築、ECサイトの運用など、多様な技術領域を横断的に経験。フロントエンドエンジニアとしての土台を築いた。",
+    skills: [
+      "HTML",
+      "CSS",
+      "Sass",
+      "JavaScript",
+      "JQuery",
+      "React",
+      "TypeScript",
+      "WordPress",
+      "Smarty",
+    ],
   },
   {
-    period: "2020 — 2022",
-    company: "株式会社テックスタジオ",
-    role: "フロントエンドエンジニア",
+    period: "2025",
+    title: "フリーランスとして独立",
     description:
-      "BtoB SaaS プロダクトのフロントエンドを担当。React + Redux から React Query へのリアーキテクチャを主導し、API コール数を 40% 削減。",
-    skills: ["React", "TypeScript", "React Query", "Jest"],
+      "ECサイトのフロントエンド開発を中心に、新機能実装・新サービス立ち上げ・UI/UX改善・リアーキテクチャなど幅広く担当。個人開発でもAIや最新技術を積極的に取り込み、技術の幅を広げている。",
+    skills: ["JavaScript", "TypeScript", "Next.js", "Claude Code"],
   },
   {
-    period: "2018 — 2020",
-    company: "合同会社ウェブクラフト",
-    role: "Webエンジニア",
+    period: "2025-現在",
+    title: "宅地建物取引士を取得",
     description:
-      "コーポレートサイトやECサイトの実装。WordPress テーマ開発から React への移行期を経験し、モダンフロントエンドの基礎を習得。",
-    skills: ["React", "JavaScript", "WordPress", "SCSS"],
+      "今後はエンジニアリングとの掛け合わせに加え、SEOの知見を不動産領域の記事執筆に展開するなど、技術と異分野の接点を探っている。",
   },
 ];
 
 export const certifications: Certification[] = [
   {
-    year: "2023",
-    name: "AWS Certified Solutions Architect – Associate",
+    year: "2025",
+    name: "宅地建物取引士",
     description:
-      "AWSのアーキテクチャ設計に関する知識を証明する認定資格。フロントエンドのデプロイ基盤設計にも活用。",
-    tags: ["AWS", "クラウド", "インフラ"],
+      "不動産取引の専門家として、法律・税制・実務など幅広い知識を習得。",
+    tags: ["国家資格", "国土交通省"],
   },
   {
-    year: "2022",
-    name: "Google Lighthouse Performance 専門研修修了",
+    year: "2024",
+    name: "Webライティング能力検定 1級",
     description:
-      "Core Web Vitals の計測・改善手法を体系的に学習。LCP / CLS / INP の最適化を実務に応用。",
-    tags: ["パフォーマンス", "Web最適化"],
-  },
-  {
-    year: "2021",
-    name: "情報処理技術者試験（応用情報技術者）",
-    description:
-      "IPA が主催する国家試験。ネットワーク・データベース・セキュリティなど幅広いIT知識を習得。",
-    tags: ["IPA", "国家資格"],
+      "SEOを意識したWebコンテンツの企画・執筆能力を認定する資格。",
+    tags: [
+      "日本Webライティング協会",
+      "SEO", 
+    ],
   },
 ];
 

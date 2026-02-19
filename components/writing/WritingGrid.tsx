@@ -49,8 +49,8 @@ export default function WritingGrid({ writings }: { writings: Writing[] }) {
           {/* Title + external link icon */}
           <div className="flex items-start justify-between gap-2">
             <h2 className="text-sm font-semibold leading-snug" style={{ color: "var(--text)" }}>
-            </h2>
               {article.title}
+            </h2>
           </div>
 
           {/* Description */}

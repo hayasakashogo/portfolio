@@ -37,17 +37,14 @@ export default function Experience() {
             <div className="flex flex-col gap-3">
               <div>
                 <h3 className="text-sm font-semibold" style={{ color: "var(--text)" }}>
-                  {exp.role}
-                  {exp.company && (
-                    <span style={{ color: "var(--muted)" }}> · {exp.company}</span>
-                  )}
+                  {exp.title}
                 </h3>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
                 {exp.description}
               </p>
               <div className="flex flex-wrap gap-2">
-                {exp.skills.map((skill) => (
+                {exp.skills && exp.skills.map((skill) => (
                   <Badge key={skill}>{skill}</Badge>
                 ))}
               </div>

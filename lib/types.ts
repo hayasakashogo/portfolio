@@ -13,10 +13,9 @@ export type Profile = {
 
 export type Experience = {
   period: string;
-  company?: string;
-  role: string;
+  title: string;
   description: string;
-  skills: string[];
+  skills?: string[];
 };
 
 export type Certification = {
