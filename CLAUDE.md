@@ -44,7 +44,7 @@ components/
     PageLayout.tsx    — 3カラム共通ラッパー（トップページ専用）
                         SP: HeroPanel を min-h-screen + justify-center で全画面表示
                         MobileMenu は layout.tsx に移動済み（.page-content の外）
-    HeroPanel.tsx     — 左固定：名前・bio・スキル・SNSリンク・ThemeToggle
+    HeroPanel.tsx     — 左固定：名前・bio・SNSリンク（accent色）・ThemeToggle
     NavPanel.tsx      — 右固定：セクションナビ（Intersection Observer でアクティブ検知）
     MobileMenu.tsx    — SP用ハンバーガーメニュー（layout.tsx で .page-content 外にレンダリング）
                         開閉時 framer-motion アニメーション・開放中 body.overflow:hidden

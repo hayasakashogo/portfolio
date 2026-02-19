@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Taro Yamada — Frontend Engineer",
+  title: "Shogo Hayasaka — Portfolio",
   description:
-    "モダンで高品質なWebフロントエンドの開発を専門とするフリーランスエンジニア。React / Next.js を中心に活動しています。",
+    "フロントエンドエンジニアとして、UI/UXにこだわったWebの設計・実装に日々向き合っています。2025年には宅地建物取引士を取得。技術の枠にとどまらず、異分野にも手を伸ばしながら、自分だけの視座を持つエンジニアでありたいと考えています。"
 };
 
 export default function RootLayout({
