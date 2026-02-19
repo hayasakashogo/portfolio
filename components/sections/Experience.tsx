@@ -21,8 +21,8 @@ export default function Experience() {
             className="grid gap-4 rounded-md p-5 sm:grid-cols-[120px_1fr]"
           style={{
             background: "var(--glass-bg)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(12px)",
+            backdropFilter: "blur(4px)",
+            WebkitBackdropFilter: "blur(4px)",
             border: "1px solid var(--badge-border)",
           }}
           >

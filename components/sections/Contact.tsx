@@ -17,8 +17,8 @@ export default function Contact() {
         className="flex flex-col gap-6 rounded-md p-6"
         style={{
           background: "var(--glass-bg)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(12px)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
           border: "1px solid var(--badge-border)",
         }}
       >

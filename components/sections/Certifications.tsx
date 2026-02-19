@@ -21,8 +21,8 @@ export default function Certifications() {
             className="rounded-md p-5 transition-colors"
             style={{
               background: "var(--glass-bg)",
-              backdropFilter: "blur(6px)",
-              WebkitBackdropFilter: "blur(12px)",
+              backdropFilter: "blur(4px)",
+              WebkitBackdropFilter: "blur(4px)",
               border: "1px solid var(--badge-border)",
             }}
           >
