@@ -35,7 +35,17 @@ export default function NavPanel() {
       if (el) observer.observe(el);
     });
 
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const nearBottom =
+        window.innerHeight + window.scrollY >= document.body.scrollHeight - 100;
+      if (nearBottom) setActive("contact");
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -50,7 +60,7 @@ export default function NavPanel() {
             style={{ color: isActive ? "var(--text)" : "var(--muted)" }}
             onClick={(e) => {
               e.preventDefault();
-              document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+              document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
             }}
           >
             <span

@@ -74,6 +74,15 @@ body.opening-done .page-content {
   transform: translateY(0);
 }
 
+/* Contact form inputs */
+.contact-input:focus {
+  border-color: var(--accent) !important;
+  outline: none;
+}
+.contact-input::placeholder {
+  color: var(--muted);
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 4px;
