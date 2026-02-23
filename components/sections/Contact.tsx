@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { profile } from "@/lib/data";
@@ -67,6 +67,20 @@ export default function Contact() {
   const [serverError, setServerError] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
+
+  useEffect(() => {
+    if (showConfirm) {
+      window.dispatchEvent(new Event("lenis:stop"));
+      document.body.style.overflow = "hidden";
+    } else {
+      window.dispatchEvent(new Event("lenis:start"));
+      document.body.style.overflow = "";
+    }
+    return () => {
+      window.dispatchEvent(new Event("lenis:start"));
+      document.body.style.overflow = "";
+    };
+  }, [showConfirm]);
 
   const handleChange =
     (field: keyof FormData) =>
@@ -403,43 +417,6 @@ export default function Contact() {
         </AnimatePresence>,
         document.body
       )}
-
-      {/* Footer */}
-      <footer className="mt-20 pt-8" style={{ borderTop: "1px solid var(--border)" }}>
-        <p className="text-xs" style={{ color: "var(--muted)" }}>
-          Built with{" "}
-          <a
-            href="https://nextjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-70"
-            style={{ color: "var(--accent)" }}
-          >
-            Next.js
-          </a>
-          {" & "}
-          <a
-            href="https://tailwindcss.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-70"
-            style={{ color: "var(--accent)" }}
-          >
-            Tailwind CSS
-          </a>
-          {" · "}
-          Deployed on{" "}
-          <a
-            href="https://vercel.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-70"
-            style={{ color: "var(--accent)" }}
-          >
-            Vercel
-          </a>
-        </p>
-      </footer>
     </section>
   );
 }

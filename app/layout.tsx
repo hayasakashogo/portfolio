@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { BackgroundWrapper } from "@/components/background/BackgroundWrapper";
+import Footer from "@/components/layout/Footer";
 import MobileMenu from "@/components/layout/MobileMenu";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
@@ -41,6 +42,7 @@ export default function RootLayout({
           <MobileMenu />
           <div className="page-content">
             {children}
+            <Footer />
           </div>
         </ThemeProvider>
       </body>
