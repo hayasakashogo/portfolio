@@ -20,8 +20,17 @@ export default function MobileMenu() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    if (open) {
+      window.dispatchEvent(new Event("lenis:stop"));
+      document.body.style.overflow = "hidden";
+    } else {
+      window.dispatchEvent(new Event("lenis:start"));
+      document.body.style.overflow = "";
+    }
+    return () => {
+      window.dispatchEvent(new Event("lenis:start"));
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   const handleNavClick = (id: string) => {

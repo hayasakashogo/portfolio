@@ -27,28 +27,33 @@ npm run start    # 本番サーバー起動（要ビルド）
 
 ```
 app/
-  layout.tsx          — ルートレイアウト：metadata・ThemeProvider・SmoothScroll・BackgroundWrapper・MobileMenu・フォント
+  layout.tsx          — ルートレイアウト：metadata・ThemeProvider・SmoothScroll・BackgroundWrapper・MobileMenu・Footer・フォント
   page.tsx            — トップページ：PageLayout + 全セクションの組み立て
   globals.css         — CSS変数（dark/light）・ベーススタイル・オープニングアニメーション
   projects/page.tsx   — プロジェクト一覧（独立レイアウト・lg:3カラムグリッド）
   writing/page.tsx    — 記事一覧（独立レイアウト・sm:2カラムカードグリッド）
+  api/contact/route.ts — POST: コンタクトフォーム受信・microCMS 保存・Slack 通知（任意）
 
 components/
   SmoothScroll.tsx          — Lenis 慣性スクロール初期化（layout.tsx から全ページに適用）
+                               `lenis:stop` / `lenis:start` カスタムイベントで外部からスクロールを制御
   background/
     BackgroundWrapper.tsx     — dynamic import ラッパー（SSR: false で3D背景を読み込み）
     IcosahedronBackground.tsx — Three.js + react-three/fiber 3D正二十面体シーン
                                  タイピングオーバーレイ・ブルーム展開・マウストラッキング・
                                  スクロール追従・テーマ対応・アニメーション中スクロールロック
   layout/
+    Footer.tsx        — 全ページ共通フッター（SNSリンク・コピーライト・利用規約モーダル・Built with）
     PageLayout.tsx    — 3カラム共通ラッパー（トップページ専用）
                         SP: HeroPanel を min-h-screen + justify-center で全画面表示
                         MobileMenu は layout.tsx に移動済み（.page-content の外）
-    HeroPanel.tsx     — 左固定：名前・bio・SNSリンク（accent色）・ThemeToggle
+    HeroPanel.tsx     — 左固定：名前・bio・SocialLinks・ThemeToggle
+    SocialLinks.tsx   — SNS4アイコン（GitHub・X・LinkedIn・Email）の共通コンポーネント
+                        HeroPanel・Footer で再利用。Props: className?
     NavPanel.tsx      — 右固定：セクションナビ（Intersection Observer でアクティブ検知）
                         NAV_SECTIONS: experience / skills / certifications / projects / writing / contact
     MobileMenu.tsx    — SP用ハンバーガーメニュー（layout.tsx で .page-content 外にレンダリング）
-                        開閉時 framer-motion アニメーション・開放中 body.overflow:hidden
+                        開閉時 framer-motion アニメーション・開放中 lenis:stop + body.overflow:hidden
     ThemeToggle.tsx   — ダーク/ライト切り替えボタン（マウント検知に useSyncExternalStore 使用）
   projects/
     ProjectGrid.tsx   — /projects 専用グリッド（sm:2/lg:3カラム・サムネイルホバー・ExternalLink アイコン）
@@ -59,7 +64,9 @@ components/
     Certifications.tsx — カード形式（年・資格名・説明・タグ）
     Projects.tsx      — 上位4件：SP=1カラムカードグリッド / lg=横並びリスト + "View more →"
     Writing.tsx       — 上位4件：記事リスト + "View more →" (/writing へ)
-    Contact.tsx       — メール CTA + フッター
+    Contact.tsx       — コンタクトフォーム
+                        Zod バリデーション（lib/contactSchema.ts）・確認モーダル・
+                        送信成功/エラー状態・確認モーダル表示中は lenis:stop でスクロールロック
   ui/
     Badge.tsx         — ティール枠のスキルバッジ
     SectionLabel.tsx  — セクション見出し（EXPERIENCE 等）
@@ -74,6 +81,7 @@ lib/
   data.ts             — 静的データ + microCMS フェッチ関数
                         静的: profile・experiences・certifications
                         async: getProjects()・getWritings()
+  contactSchema.ts    — Zod バリデーションスキーマ（name/email/message フィールド）
 
 public/
   projects/           — SVG プレースホルダーサムネイル（portfolio, ui-kit, saas-dashboard, markdown-editor）
@@ -99,6 +107,9 @@ public/
 - `duration: 1.2`・指数関数的イージングで自然な慣性感
 - `scroll-behavior: smooth`（globals.css）は Lenis と競合するため削除済み
 - `window.scrollY` はネイティブ互換で更新されるため、3D背景のスクロール追従もそのまま動作
+- **スクロールロック API**: `window.dispatchEvent(new Event("lenis:stop/lenis:start"))` で外部から制御
+  - `MobileMenu`（ハンバーガーメニュー）・`Footer`（利用規約モーダル）・`Contact`（確認モーダル）で使用
+  - モーダル内の独自スクロールは wheel event の `stopPropagation()` で Lenis をバイパス（`lenis.stop()` 時も内部 scroll を維持）
 
 ### アニメーション（framer-motion v12）
 - 全セクションコンポーネントは `"use client"` で `motion.div` / `motion.a` を使用
@@ -144,7 +155,9 @@ Geist Sans と Geist Mono を `app/layout.tsx` で `next/font/google` から読�
   - `thumbnail`: テキスト型（string）・画像型（`{url,width,height}`）の両方に対応
   - `thumbnail` / `url`: 空文字 → `undefined` に正規化
 - **全ページ `export const dynamic = "force-dynamic"`**: microCMS フェッチを伴うページは静的生成をオプトアウト
-- **環境変数**: `.env.local` に `MICROCMS_SERVICE_DOMAIN` と `MICROCMS_API_KEY` を設定
+- **環境変数**: `.env.local` に以下を設定
+  - `MICROCMS_SERVICE_DOMAIN`・`MICROCMS_API_KEY`（必須）
+  - `SLACK_WEBHOOK_URL`（任意・コンタクトフォーム受信時に Slack 通知）
 
 ### next/image
 - 全サムネイルは `<Image unoptimized />` で描画し、Next.js の画像最適化・ドメイン検証をバイパス

@@ -17,7 +17,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
           </aside>
 
           {/* Center: Scrollable content */}
-          <main className="flex-1 min-w-0 pb-16 lg:pt-16">
+          <main className="flex-1 min-w-0 lg:pt-16">
             {children}
           </main>
 
