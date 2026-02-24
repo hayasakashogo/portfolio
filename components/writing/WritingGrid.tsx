@@ -4,9 +4,41 @@ import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import type { Writing } from "@/lib/types";
 
+const formatDate = (date: string) => date.slice(0, 10).replace(/-/g, "/");
+
 export default function WritingGrid({ writings }: { writings: Writing[] }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
+      {writings.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-col gap-2 rounded-md p-5"
+          style={{
+            backdropFilter: "blur(4px)",
+            WebkitBackdropFilter: "blur(4px)",
+            border: "1px solid var(--badge-border)",
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-xs tabular-nums" style={{ color: "var(--muted)" }}>——</span>
+            <span
+              className="rounded px-1.5 py-0.5 text-xs font-medium"
+              style={{
+                background: "var(--badge-bg)",
+                border: "1px solid var(--badge-border)",
+                color: "var(--accent)",
+              }}
+            >
+              Coming Soon
+            </span>
+          </div>
+          <h2 className="text-sm font-semibold leading-snug" style={{ color: "var(--muted)" }}>
+            記事を準備中です
+          </h2>
+        </motion.div>
+      )}
       {writings.map((article, i) => (
         <motion.a
           key={article.id}
@@ -27,7 +59,7 @@ export default function WritingGrid({ writings }: { writings: Writing[] }) {
           {/* Date + platform */}
           <div className="flex items-center gap-3">
             <time className="text-xs tabular-nums" style={{ color: "var(--muted)" }}>
-              {article.date}
+              {formatDate(article.date)}
             </time>
             <span
               className="rounded px-1.5 py-0.5 text-xs font-medium"

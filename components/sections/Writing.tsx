@@ -7,6 +7,7 @@ import type { Writing as WritingType } from "@/lib/types";
 import SectionLabel from "@/components/ui/SectionLabel";
 
 const PREVIEW_COUNT = 4;
+const formatDate = (date: string) => date.slice(0, 10).replace(/-/g, "/");
 
 export default function Writing({ writings }: { writings: WritingType[] }) {
   const preview = writings.slice(0, PREVIEW_COUNT);
@@ -16,6 +17,37 @@ export default function Writing({ writings }: { writings: WritingType[] }) {
       <SectionLabel>Writing</SectionLabel>
 
       <div className="flex flex-col gap-3">
+        {preview.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.35 }}
+            className="grid gap-1 rounded-md p-4"
+            style={{
+              backdropFilter: "blur(4px)",
+              WebkitBackdropFilter: "blur(4px)",
+              border: "1px solid var(--badge-border)",
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-xs tabular-nums" style={{ color: "var(--muted)" }}>——</span>
+              <span
+                className="rounded px-1.5 py-0.5 text-xs font-medium"
+                style={{
+                  background: "var(--badge-bg)",
+                  border: "1px solid var(--badge-border)",
+                  color: "var(--accent)",
+                }}
+              >
+                Coming Soon
+              </span>
+            </div>
+            <p className="text-sm font-semibold leading-snug" style={{ color: "var(--muted)" }}>
+              記事を準備中です
+            </p>
+          </motion.div>
+        )}
         {preview.map((article, i) => (
           <motion.a
             key={article.id}
@@ -36,7 +68,7 @@ export default function Writing({ writings }: { writings: WritingType[] }) {
             {/* Date + platform */}
             <div className="flex items-center gap-3">
               <time className="text-xs tabular-nums" style={{ color: "var(--muted)" }}>
-                {article.date}
+                {formatDate(article.date)}
               </time>
               <span
                 className="rounded px-1.5 py-0.5 text-xs font-medium"
