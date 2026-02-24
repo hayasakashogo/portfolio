@@ -28,7 +28,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
         >
           {/* Thumbnail */}
           {project.thumbnail ? (
-            <div className="relative h-44 w-full overflow-hidden">
+            <div className="relative aspect-3/2 w-full overflow-hidden">
               <Image
                 src={project.thumbnail}
                 alt={project.name}
@@ -39,7 +39,7 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
             </div>
           ) : (
             <div
-              className="flex h-44 w-full items-center justify-center"
+              className="flex aspect-3/2 w-full items-center justify-center"
               style={{ background: "var(--border)" }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--muted)" }}>

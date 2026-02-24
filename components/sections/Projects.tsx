@@ -17,8 +17,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
     <section id="projects" className="mb-24">
       <SectionLabel>Projects</SectionLabel>
 
-      {/* SP: 2-column card grid / lg: list */}
-      <div className="grid grid-cols-1 gap-4 lg:flex lg:flex-col lg:gap-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {preview.map((project, i) => (
           <motion.a
             key={project.id}
@@ -29,7 +28,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.4, delay: i * 0.08 }}
-            className="card-link group flex flex-col overflow-hidden rounded-md duration-200 lg:flex-row lg:gap-4 lg:p-4"
+            className="card-link group flex flex-col overflow-hidden rounded-md duration-200"
             style={{
               backdropFilter: "blur(4px)",
               WebkitBackdropFilter: "blur(4px)",
@@ -38,7 +37,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
           >
             {/* Thumbnail */}
             {project.thumbnail ? (
-              <div className="relative h-28 w-full flex-shrink-0 overflow-hidden lg:h-20 lg:w-32 lg:rounded-lg">
+              <div className="relative aspect-[3/2] w-full overflow-hidden">
                 <Image
                   src={project.thumbnail}
                   alt={project.name}
@@ -49,7 +48,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
               </div>
             ) : (
               <div
-                className="flex h-28 w-full flex-shrink-0 items-center justify-center lg:h-20 lg:w-32 lg:rounded-lg"
+                className="flex aspect-[3/2] w-full items-center justify-center"
                 style={{ background: "var(--border)" }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--muted)" }}>
@@ -60,7 +59,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
             )}
 
             {/* Content */}
-            <div className="flex min-w-0 flex-1 flex-col gap-2 p-3 lg:p-0">
+            <div className="flex min-w-0 flex-1 flex-col gap-2 p-3">
               <div className="flex items-center justify-between gap-2">
                 <h3 className="truncate text-sm font-semibold" style={{ color: "var(--text)" }}>
                   {project.name}
