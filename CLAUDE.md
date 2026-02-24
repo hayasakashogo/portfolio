@@ -62,7 +62,7 @@ components/
     Skills.tsx        — 3カテゴリ（Languages / Frameworks / Tools）スキルチップ表示
                         react-icons/si（Simple Icons）+ react-icons/vsc でアイコン付きバッジ
     Certifications.tsx — カード形式（年・資格名・説明・タグ）
-    Projects.tsx      — 上位4件：SP=1カラムカードグリッド / lg=横並びリスト + "View more →"
+    Projects.tsx      — 上位4件：sm:2カラムカードグリッド（サムネイル aspect-[3/2]）+ "View more →"
     Writing.tsx       — 上位4件：記事リスト + "View more →" (/writing へ)
     Contact.tsx       — コンタクトフォーム
                         Zod バリデーション（lib/contactSchema.ts）・確認モーダル・
