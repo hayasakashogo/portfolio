@@ -7,10 +7,11 @@ export const profile: Profile = {
   bio: "フロントエンドエンジニアとして、UI/UXにこだわったWebの設計・実装に日々向き合っています。2025年には宅地建物取引士を取得。技術の枠にとどまらず、異分野にも手を伸ばしながら、自分だけの視座を持つエンジニアでありたいと考えています。",
   skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "GraphQL", "Node.js"],
   social: {
-    github: "https://github.com/taro-yamada",
-    twitter: "https://twitter.com/taro_yamada",
-    linkedin: "https://linkedin.com/in/taro-yamada",
-    email: "hello@taro-yamada.dev",
+    x: "",
+    instagram: "",
+    github: "https://github.com/hayasakashogo",
+    note: "https://note.com/shogo_freelance",
+    zenn: "https://zenn.dev/hayasakashogo",
   },
 };
 
@@ -72,6 +73,7 @@ type MicroCMSImageField = { url: string; width: number; height: number };
 type MicroCMSProject = Omit<Project, "skills" | "thumbnail"> & {
   skills: MicroCMSTextField[];
   thumbnail?: string | MicroCMSImageField;
+  github?: string;
 };
 
 type MicroCMSWriting = Writing;
@@ -83,6 +85,7 @@ export async function getProjects(): Promise<Project[]> {
     skills: item.skills.map((s) => s.name),
     thumbnail: typeof item.thumbnail === "object" ? item.thumbnail?.url || undefined : item.thumbnail || undefined,
     url: item.url || undefined,
+    github: item.github || undefined,
   }));
 }
 

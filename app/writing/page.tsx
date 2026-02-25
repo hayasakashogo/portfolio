@@ -6,8 +6,8 @@ import { getWritings } from "@/lib/data";
 import WritingGrid from "@/components/writing/WritingGrid";
 
 export const metadata = {
-  title: "Writing — Taro Yamada",
-  description: "Taro Yamadaの記事一覧",
+  title: "Writing — Shogo Hayasaka",
+  description: "Shogo Hayasakaの記事一覧",
 };
 
 export default async function WritingPage() {
