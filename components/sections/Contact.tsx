@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { profile } from "@/lib/data";
 import SectionLabel from "@/components/ui/SectionLabel";
+import SlideButton from "@/components/ui/SlideButton";
 import { contactSchema } from "@/lib/contactSchema";
 
 type FormData = { name: string; email: string; message: string };
@@ -58,6 +59,7 @@ const fields: { key: keyof FormData; label: string; type?: string; isTextarea?: 
   { key: "email", label: "メールアドレス", type: "email" },
   { key: "message", label: "メッセージ", isTextarea: true },
 ];
+
 
 export default function Contact() {
   const [formData, setFormData] = useState<FormData>({ name: "", email: "", message: "" });
@@ -214,20 +216,9 @@ export default function Contact() {
             <p style={{ color: "var(--muted)", fontSize: "0.875rem", marginBottom: "1.5rem" }}>
               お返事は3〜5営業日以内にご連絡します。
             </p>
-            <button
-              onClick={resetForm}
-              style={{
-                background: "transparent",
-                border: "1px solid var(--accent)",
-                color: "var(--accent)",
-                padding: "0.5rem 1.25rem",
-                borderRadius: "0.375rem",
-                cursor: "pointer",
-                fontSize: "0.875rem",
-              }}
-            >
+            <SlideButton onClick={resetForm} padding="0.5rem 1.25rem" borderRadius="0.375rem">
               別のメッセージを送る →
-            </button>
+            </SlideButton>
           </motion.div>
         ) : (
           <form noValidate onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -286,24 +277,11 @@ export default function Contact() {
               </p>
             )}
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              style={{
-                alignSelf: "flex-start",
-                background: "transparent",
-                border: `1px solid ${isLoading ? "var(--muted)" : "var(--accent)"}`,
-                color: isLoading ? "var(--muted)" : "var(--accent)",
-                padding: "0.625rem 1.5rem",
-                borderRadius: "0.5rem",
-                cursor: isLoading ? "not-allowed" : "pointer",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                transition: "opacity 0.15s ease",
-              }}
-            >
-              {isLoading ? "送信中…" : submitStatus === "error" ? "再試行する" : "送信する"}
-            </button>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <SlideButton type="submit" disabled={isLoading}>
+                {isLoading ? "送信中…" : submitStatus === "error" ? "再試行する" : "送信する"}
+              </SlideButton>
+            </div>
           </form>
         )}
       </motion.div>
@@ -381,35 +359,23 @@ export default function Contact() {
               </div>
 
               <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end" }}>
-                <button
+                <SlideButton
+                  animate={false}
                   onClick={() => setShowConfirm(false)}
-                  style={{
-                    background: "transparent",
-                    border: "1px solid var(--border)",
-                    color: "var(--muted)",
-                    padding: "0.5rem 1.25rem",
-                    borderRadius: "0.375rem",
-                    cursor: "pointer",
-                    fontSize: "0.875rem",
-                  }}
+                  borderColor="var(--border)"
+                  textColor="var(--muted)"
+                  padding="0.5rem 1.25rem"
+                  borderRadius="0.375rem"
                 >
                   キャンセル
-                </button>
-                <button
+                </SlideButton>
+                <SlideButton
                   onClick={handleConfirmSend}
-                  style={{
-                    background: "transparent",
-                    border: "1px solid var(--accent)",
-                    color: "var(--accent)",
-                    padding: "0.5rem 1.25rem",
-                    borderRadius: "0.375rem",
-                    cursor: "pointer",
-                    fontSize: "0.875rem",
-                    fontWeight: 500,
-                  }}
+                  padding="0.5rem 1.25rem"
+                  borderRadius="0.375rem"
                 >
                   送信する
-                </button>
+                </SlideButton>
               </div>
             </motion.div>
           </motion.div>

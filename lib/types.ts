@@ -4,10 +4,11 @@ export type Profile = {
   bio: string;
   skills: string[];
   social: {
-    github: string;
-    twitter: string;
-    linkedin: string;
-    email: string;
+    x?: string;
+    instagram?: string;
+    github?: string;
+    note?: string;
+    zenn?: string;
   };
 };
 
@@ -33,6 +34,7 @@ export type Project = {
   skills: string[];
   thumbnail?: string;
   url?: string;
+  github?: string;
 };
 
 export type Writing = {

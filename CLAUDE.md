@@ -48,7 +48,9 @@ components/
                         SP: HeroPanel を min-h-screen + justify-center で全画面表示
                         MobileMenu は layout.tsx に移動済み（.page-content の外）
     HeroPanel.tsx     — 左固定：名前・bio・SocialLinks・ThemeToggle
-    SocialLinks.tsx   — SNS4アイコン（GitHub・X・LinkedIn・Email）の共通コンポーネント
+    SocialLinks.tsx   — SNS5アイコン（X・Instagram・GitHub・Zenn・Note）の共通コンポーネント
+                        Note は react-icons/si に存在しないためカスタム SVG で実装
+                        href が空の SNS はレンダリングをスキップ（.filter）
                         HeroPanel・Footer で再利用。Props: className?
     NavPanel.tsx      — 右固定：セクションナビ（Intersection Observer でアクティブ検知）
                         NAV_SECTIONS: experience / skills / certifications / projects / writing / contact
@@ -56,7 +58,10 @@ components/
                         開閉時 framer-motion アニメーション・開放中 lenis:stop + body.overflow:hidden
     ThemeToggle.tsx   — ダーク/ライト切り替えボタン（マウント検知に useSyncExternalStore 使用）
   projects/
-    ProjectGrid.tsx   — /projects 専用グリッド（sm:2/lg:3カラム・サムネイルホバー・ExternalLink アイコン）
+    ProjectGrid.tsx   — /projects 専用グリッド（sm:2/lg:3カラム・サムネイルホバー）
+                        ProjectLinkButton で "App"・"GitHub" ボタンを表示（アニメーション付き）
+    ProjectLinkButton.tsx — "App"/"GitHub" ボタンコンポーネント。背景スライドアニメーション実装。
+                            状態: "idle" | "in" | "out"、timerRef で 300ms 後にアイドル復帰
   sections/
     Experience.tsx    — タイムライン形式（期間・役職・バッジ）
     Skills.tsx        — 3カテゴリ（Languages / Frameworks / Tools）スキルチップ表示
@@ -70,12 +75,14 @@ components/
   ui/
     Badge.tsx         — ティール枠のスキルバッジ
     SectionLabel.tsx  — セクション見出し（EXPERIENCE 等）
+    SlideButton.tsx   — 背景スライドアニメーション付き汎用ボタン（Contact・その他で使用）
+                        Props: type? / onClick? / disabled? / animate? / fillColor? / borderColor? / textColor? / padding? / borderRadius?
   writing/
     WritingGrid.tsx   — /writing 専用グリッド（sm:2カラム・日付・プラットフォームタグ）
 
 lib/
   types.ts            — 全コンテンツの TypeScript 型定義
-                        Project: id/name/description/skills[]/thumbnail?/url?（stars 削除済み）
+                        Project: id/name/description/skills[]/thumbnail?/url?/github?（stars 削除済み）
                         Writing: id/date/platform/title/description/url?（views 削除済み）
   microcms.ts         — microCMS SDK クライアントファクトリー（getClient() を遅延生成）
   data.ts             — 静的データ + microCMS フェッチ関数
@@ -135,6 +142,7 @@ public/
 ### アイコン
 - **lucide-react**: `ProjectGrid.tsx` / `Projects.tsx` / `Writing.tsx` / `WritingGrid.tsx` — `ExternalLink`（外部リンク表示）
 - **react-icons**: `Skills.tsx` — `react-icons/si`（Simple Icons）+ `react-icons/vsc` でスキルバッジにブランドロゴを表示
+- **カスタム SVG**: `SocialLinks.tsx` — Note アイコン（react-icons/si に存在しないため独自実装、丸角四角形から "n" をくり抜くデザイン）
 
 ### パスエイリアス
 `@/*` はプロジェクトルート（`./`）に解決される。例: `import Foo from "@/components/Foo"`
@@ -153,7 +161,7 @@ Geist Sans と Geist Mono を `app/layout.tsx` で `next/font/google` から読�
 - **microCMS レスポンス正規化**（`getProjects()` 内）:
   - `skills`: `{fieldId, name}[]` → `string[]`（`.name` を抽出）
   - `thumbnail`: テキスト型（string）・画像型（`{url,width,height}`）の両方に対応
-  - `thumbnail` / `url`: 空文字 → `undefined` に正規化
+  - `thumbnail` / `url` / `github`: 空文字 → `undefined` に正規化
 - **全ページ `export const dynamic = "force-dynamic"`**: microCMS フェッチを伴うページは静的生成をオプトアウト
 - **環境変数**: `.env.local` に以下を設定
   - `MICROCMS_SERVICE_DOMAIN`・`MICROCMS_API_KEY`（必須）

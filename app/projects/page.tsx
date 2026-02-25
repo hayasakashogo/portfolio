@@ -6,8 +6,8 @@ import { getProjects } from "@/lib/data";
 import ProjectGrid from "@/components/projects/ProjectGrid";
 
 export const metadata = {
-  title: "Projects — Taro Yamada",
-  description: "Taro Yamadaのプロジェクト一覧",
+  title: "Projects — Shogo Hayasaka",
+  description: "Shogo Hayasakaのプロジェクト一覧",
 };
 
 export default async function ProjectsPage() {
