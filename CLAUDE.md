@@ -27,7 +27,7 @@ npm run start    # 本番サーバー起動（要ビルド）
 
 ```
 app/
-  layout.tsx          — ルートレイアウト：metadata・ThemeProvider・SmoothScroll・BackgroundWrapper・MobileMenu・Footer・フォント
+  layout.tsx          — ルートレイアウト：metadata・ThemeProvider・SmoothScroll・BackgroundWrapper・MobileMenu・Footer・フォント・Analytics
   page.tsx            — トップページ：PageLayout + 全セクションの組み立て
   globals.css         — CSS変数（dark/light）・ベーススタイル・オープニングアニメーション
   projects/page.tsx   — プロジェクト一覧（独立レイアウト・lg:3カラムグリッド）
@@ -67,7 +67,7 @@ components/
     Skills.tsx        — 3カテゴリ（Languages / Frameworks / Tools）スキルチップ表示
                         react-icons/si（Simple Icons）+ react-icons/vsc でアイコン付きバッジ
     Certifications.tsx — カード形式（年・資格名・説明・タグ）
-    Projects.tsx      — 上位4件：sm:2カラムカードグリッド（サムネイル aspect-[3/2]）+ "View more →"
+    Projects.tsx      — 上位4件：sm:2カラムカードグリッド（サムネイル aspect-3/2）+ "View more →"
     Writing.tsx       — 上位4件：記事リスト + "View more →" (/writing へ)
     Contact.tsx       — コンタクトフォーム
                         Zod バリデーション（lib/contactSchema.ts）・確認モーダル・
@@ -102,6 +102,7 @@ public/
   - `:root` = ダークのデフォルト値、`.light` クラスでライトパレットに上書き
 - **グラスモーフィズム変数**: `--glass-bg`・`--glass-border`（`backdropFilter: blur(4px)` と組み合わせて使用、全コンポーネント統一）
 - **重要**: 全コンポーネントは色にTailwindユーティリティクラスを使わず、`style={{ color: "var(--accent)" }}` のようなインラインCSS変数パターンを統一使用
+- **Tailwind v4 ショートハンド構文**: v4 では角括弧不要な短縮形を使用（例: `aspect-[3/2]` → `aspect-3/2`、`flex-shrink-0` → `shrink-0`）
 
 ### ダークモード（next-themes）
 - `app/layout.tsx` で `<ThemeProvider attribute="class" defaultTheme="dark">` を設定
@@ -171,3 +172,9 @@ Geist Sans と Geist Mono を `app/layout.tsx` で `next/font/google` から読�
 - 全サムネイルは `<Image unoptimized />` で描画し、Next.js の画像最適化・ドメイン検証をバイパス
 - サムネイルは `object-top`（上部中央基準）でトリミング表示
 - `public/projects/` に SVG プレースホルダーサムネイルあり（portfolio, ui-kit, saas-dashboard, markdown-editor）
+
+### アナリティクス（Vercel Analytics）
+- `@vercel/analytics` パッケージで計測
+- `app/layout.tsx` の `<body>` 直下（`<ThemeProvider>` の外）に `<Analytics />` を配置
+- Vercel デプロイ後、ダッシュボードの Analytics タブでページビューを確認可能
+- 開発時は DevTools > Network で `/_vercel/insights/` へのリクエストを確認
