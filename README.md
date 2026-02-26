@@ -1,6 +1,6 @@
 # Portfolio — Shogo Hayasaka
 
-個人ポートフォリオサイト。Next.js 16 App Router + React 19 + TypeScript で構築。
+個人ポートフォリオサイト。Next.js 16 App Router + React 19 + TypeScript で構築。  
 https://portfolio-shogo-hayasaka.vercel.app/
 
 ![mock](./public/mock-portforio.jpg)
