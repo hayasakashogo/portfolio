@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const NAV_SECTIONS = [
   { id: "experience", label: "EXPERIENCE" },
@@ -17,9 +19,12 @@ const LINKS = [
 ];
 
 export default function MobileMenu() {
+  const pathname = usePathname();
+  const hidden = pathname === "/projects" || pathname === "/writing";
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (hidden) return;
     if (open) {
       window.dispatchEvent(new Event("lenis:stop"));
       document.body.style.overflow = "hidden";
@@ -31,7 +36,7 @@ export default function MobileMenu() {
       window.dispatchEvent(new Event("lenis:start"));
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [open, hidden]);
 
   const handleNavClick = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -42,6 +47,8 @@ export default function MobileMenu() {
     ...NAV_SECTIONS.map((s) => ({ type: "button" as const, ...s })),
     ...LINKS.map((l) => ({ type: "link" as const, ...l })),
   ];
+
+  if (hidden) return null;
 
   return (
     <>
@@ -133,14 +140,14 @@ export default function MobileMenu() {
                       {item.label}
                     </button>
                   ) : (
-                    <a
+                    <Link
                       href={item.href}
                       className="block py-4 text-left text-sm transition-colors"
                       style={{ color: "var(--accent)" }}
                       onClick={() => setOpen(false)}
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   )}
                 </motion.div>
               ))}

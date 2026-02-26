@@ -18,7 +18,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
     <section id="projects" className="mb-24">
       <SectionLabel>Projects</SectionLabel>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {preview.map((project, i) => (
           <motion.div
             key={project.id}
