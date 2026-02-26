@@ -30,7 +30,7 @@ export default function Certifications() {
               <h3 className="text-sm font-semibold leading-snug" style={{ color: "var(--text)" }}>
                 {cert.name}
               </h3>
-              <span className="flex-shrink-0 text-xs tabular-nums" style={{ color: "var(--muted)" }}>
+              <span className="shrink-0 text-xs tabular-nums" style={{ color: "var(--muted)" }}>
                 {cert.year}
               </span>
             </div>

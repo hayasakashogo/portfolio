@@ -40,7 +40,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative aspect-[3/2] w-full overflow-hidden block"
+                  className="group relative aspect-3/2 w-full overflow-hidden block"
                 >
                   <Image
                     src={project.thumbnail}
@@ -51,7 +51,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   />
                 </a>
               ) : (
-                <div className="relative aspect-[3/2] w-full overflow-hidden">
+                <div className="relative aspect-3/2 w-full overflow-hidden">
                   <Image
                     src={project.thumbnail}
                     alt={project.name}
@@ -63,7 +63,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
               )
             ) : (
               <div
-                className="flex aspect-[3/2] w-full items-center justify-center"
+                className="flex aspect-3/2 w-full items-center justify-center"
                 style={{ background: "var(--border)" }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--muted)" }}>
